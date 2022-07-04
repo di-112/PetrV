@@ -6,6 +6,8 @@ import { StoreContext } from './store/provider';
 import store from './store/store'
 import Plans from './components/Plans';
 import Tasks from './components/Tasks';
+import Settings from './components/Settings';
+import Summary from './components/Summary';
 
 const customTheme = extendTheme({
   colors: {
@@ -23,6 +25,9 @@ const customTheme = extendTheme({
     },
     header: {
       400: '#0b0c10',
+    },
+    link: {
+      400: '#4f9fee',
     },
   },
   styles: {
@@ -46,22 +51,24 @@ const customTheme = extendTheme({
         px: 2,
         fontSize: 14,
         _hover: {
-          background: 'none !important',
-          color: 'title.400',
+          /* background: 'none !important',
+          color: 'title.400', */
           boxShadow: 'none !important',
         },
         _active: {
-          background: 'none !important',
-          color: 'title.400',
+        /*  background: 'none !important',
+          color: 'title.400', */
           boxShadow: 'none !important',
         },
         _focus: {
-          background: 'none !important',
+          // background: 'none !important',
           boxShadow: 'none !important',
         },
       },
       a: {
-        color: 'title.400',
+        color: '#4f9fee',
+        fontWeight: 700,
+        textDecoration: 'underline',
         _hover: {
           textDecoration: 'underline',
         },
@@ -78,6 +85,8 @@ const App = () => (
         <Routes>
           <Route index element={<Tasks />} />
           <Route path="/plans" element={<Plans />} />
+          <Route path="/summary" element={<Summary />} />
+          <Route path="/settings" element={<Settings />} />
         </Routes>
       </HashRouter>
     </StoreContext.Provider>

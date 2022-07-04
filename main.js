@@ -1,6 +1,7 @@
 const {
-  app, BrowserWindow, ipcMain, Notification,
+  app, BrowserWindow, ipcMain, Notification, Menu, Tray,
 } = require('electron')
+const reload = require('electron-reload')
 const path = require('path')
 
 const isDev = !app.isPackaged
@@ -9,7 +10,9 @@ const createWindow = async () => {
   const win = new BrowserWindow({
     width: 1200,
     height: 800,
-    title: 'PETR_V',
+    title: 'PetrV',
+    titleBarStyle: 'customButtonsOnHover',
+    icon: './src/assets/images/logo.png',
     webPreferences: {
       nodeIntegration: false,
       worldSafeExecuteJavaScript: true,
@@ -25,7 +28,7 @@ const createWindow = async () => {
 }
 
 if (isDev) {
-  require('electron-reload')(__dirname, {
+  reload(__dirname, {
     electron: path.join(__dirname, 'node_modules', '.bin', 'electron'),
   })
 }
@@ -34,13 +37,78 @@ ipcMain.on('notify', (_, message) => {
   new Notification({ title: 'Notifiation', body: message }).show()
 })
 
-ipcMain.on('close', _ => {
+ipcMain.on('close', (_, message) => {
   new Notification({ title: 'Notifiation', body: message }).show()
 })
+
+Menu.setApplicationMenu(null)
+
+let tray = null
 
 app.whenReady().then(async () => {
   const win = await createWindow()
 
-  win.menuBarVisible = false
-  win.title = 'PETR_V'
+  app.on('activate', () => {
+    if (BrowserWindow.getAllWindows().length === 0) createWindow()
+  })
+
+  win.setTitle('PetrV')
+
+  if (isDev) {
+    win.webContents.openDevTools()
+  }
+
+  tray = new Tray('./src/assets/images/logo.png')
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: 'Задачи',
+      click: () => {
+        win.show()
+        win.webContents.send('tasks')
+      },
+    },
+    {
+      label: 'Планы',
+      click: () => {
+        win.show()
+        win.webContents.send('plans')
+      },
+    },
+    {
+      label: 'Итоги',
+      click: () => {
+        win.show()
+        win.webContents.send('summary')
+      },
+    },
+    {
+      label: 'Настройки',
+      click: () => {
+        win.show()
+        win.webContents.send('settings')
+      },
+    },
+  ])
+
+  tray.on('balloon-click', data => {
+    console.log('data')
+  })
+
+  tray.on('click', () => {
+    win.show()
+  })
+
+  tray.setContextMenu(contextMenu)
+})
+
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    app.quit()
+    tray.destroy()
+  }
+})
+app.on('activate', () => {
+  if (BrowserWindow.getAllWindows().length === 0) {
+    createWindow()
+  }
 })

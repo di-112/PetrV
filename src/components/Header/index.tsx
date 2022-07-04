@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react'
 import { observer } from 'mobx-react-lite';
 import { useLocation, useNavigate } from 'react-router-dom'
-import { HamburgerIcon, SmallCloseIcon } from '@chakra-ui/icons';
+import { HamburgerIcon } from '@chakra-ui/icons';
 import { useStore } from '../../store/provider';
 import RedmineClient from '../../taskManagers/RedmineClient';
 
@@ -34,6 +34,11 @@ const Header = () => {
     }
     fetchMe()
   }, [])
+
+  electron.on('tasks', () => { navigate('/') })
+  electron.on('plans', () => { navigate('/plans') })
+  electron.on('settings', () => { navigate('/settings') })
+  electron.on('summary', () => { navigate('/summary') })
 
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = React.useRef()
@@ -100,6 +105,34 @@ const Header = () => {
                 Планы
               </Button>
             </Box>
+            <Box>
+              <Button
+                onClick={() => {
+                  navigate('/summary')
+                  onClose()
+                }}
+                variant="unstyled"
+                color={location.pathname === '/summary'
+                  ? 'title.400'
+                  : 'white'}
+              >
+                Итоги
+              </Button>
+            </Box>
+            <Box>
+              <Button
+                onClick={() => {
+                  navigate('/settings')
+                  onClose()
+                }}
+                variant="unstyled"
+                color={location.pathname === '/settings'
+                  ? 'title.400'
+                  : 'white'}
+              >
+                Настройки
+              </Button>
+            </Box>
           </DrawerBody>
 
         </DrawerContent>
@@ -107,12 +140,13 @@ const Header = () => {
       <Box color="title.400" fontWeight={700}>
         {me?.login}
       </Box>
+      {/* </Box>
       <IconButton
         aria-label="test"
         icon={<SmallCloseIcon />}
         onClick={() => electron.close()}
       />
-      <Box />
+      <Box /> */}
     </Flex>
   );
 };
