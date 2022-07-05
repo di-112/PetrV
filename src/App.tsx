@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChakraProvider, extendTheme } from '@chakra-ui/react'
+import { ChakraProvider, extendTheme, ColorModeScript } from '@chakra-ui/react'
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
 import { StoreContext } from './store/provider';

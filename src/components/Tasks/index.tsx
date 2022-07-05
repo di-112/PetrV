@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { Box, VStack } from '@chakra-ui/react';
+import { Box, Text, VStack } from '@chakra-ui/react';
 import { useStore } from '../../store/provider';
 import RedmineClient from '../../taskManagers/RedmineClient';
 import { ITasks } from '../../taskManagers/types';
@@ -32,7 +32,7 @@ const Tasks = () => {
           align="stretch"
         >
           {tasks.map(task => (
-            <Box key={task.id} lineHeight="22px">
+            <Box key={task.id} lineHeight="22px" fontWeight={700}>
               <TaskLink task={task} />
               {task.subject}
             </Box>

@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import {
-  Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay,
+  Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, useColorMode,
 } from '@chakra-ui/react'
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom'
@@ -24,6 +24,8 @@ const Menu: FC<IMenu> = ({
 }) => {
   const navigate = useNavigate()
 
+  const { colorMode } = useColorMode()
+
   electron.on('tasks', () => { navigate('/') })
   electron.on('plans', () => { navigate('/plans') })
   electron.on('settings', () => { navigate('/settings') })
@@ -41,8 +43,15 @@ const Menu: FC<IMenu> = ({
       placement="left"
     >
       <DrawerOverlay />
-      <DrawerContent background="bg.400">
-        <DrawerHeader fontSize={14} display="flex" alignItems="center">Меню</DrawerHeader>
+      <DrawerContent background={colorMode === 'dark' ? 'back.400' : 'back.800'}>
+        <DrawerHeader
+          fontSize={14}
+          display="flex"
+          alignItems="center"
+          color={colorMode === 'dark' ? 'main.400' : 'main.800'}
+        >
+          Меню
+        </DrawerHeader>
         <DrawerBody>
           {MenuConfig.map(({ title, path }) => (
             <MenuItem

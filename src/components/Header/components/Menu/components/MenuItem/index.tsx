@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Box, Button } from '@chakra-ui/react'
+import { Box, Button, useColorMode } from '@chakra-ui/react'
 import { observer } from 'mobx-react-lite';
 import { useLocation, useNavigate } from 'react-router-dom'
 
@@ -23,7 +23,12 @@ const MenuItem: FC<IMenuItem> = ({
     onClose()
   }
 
+  const { colorMode } = useColorMode()
+
   const isActive = location.pathname === path
+
+  const activeColor = colorMode === 'dark' ? 'main.400' : 'main.800'
+  const color = colorMode === 'dark' ? 'white' : 'black'
 
   return (
     <Box>
@@ -31,7 +36,9 @@ const MenuItem: FC<IMenuItem> = ({
         fontSize={14}
         onClick={onClick}
         variant="unstyled"
-        color={isActive ? 'main.400' : 'white'}
+        color={isActive ? activeColor : color}
+        textShadow={(!isActive || colorMode === 'dark') ? 'none' : '-1px 1px 0 #000, '
+          + '1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000'}
       >
         {title}
       </Button>

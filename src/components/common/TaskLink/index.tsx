@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { observer } from 'mobx-react-lite';
-import { Link } from '@chakra-ui/react';
+import { Link, useColorMode } from '@chakra-ui/react';
 import { useStore } from '../../../store/provider';
 import { ITasks } from '../../../taskManagers/types';
 
@@ -10,13 +10,16 @@ interface ITaskLink {
 
 const TaskLink :FC<ITaskLink> = ({ task }) => {
   const { host } = useStore()
+  const { colorMode } = useColorMode()
 
   return (
     <>
       {' -'}
       <Link
         paddingX={2}
-        color="link.400"
+        color={colorMode === 'dark' ? 'main.400' : 'main.800'}
+        textShadow={colorMode === 'dark' ? 'none' : '-1px 1px 0 #000, '
+          + '1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000'}
         target="_blank"
         href={`${host}/issues/${task.id}`}
         display="inline-block"

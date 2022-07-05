@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import { observer } from 'mobx-react-lite';
 import {
-  Box, Button, Text, VStack,
+  Box, Button, Text, useColorMode, VStack,
 } from '@chakra-ui/react';
 import moment from 'moment';
 import { useStore } from '../../store/provider';
@@ -30,6 +30,8 @@ const Plans:FC = () => {
   const [isEdit, setIsEdit] = useState(true)
 
   const [isCoped, setIsCoped] = useState(false)
+
+  const { colorMode } = useColorMode()
 
   useEffect(() => {
     const fetchPlans = async () => {
@@ -63,7 +65,7 @@ const Plans:FC = () => {
     <Box>
       <h1>План</h1>
       {isEdit && (
-      <ContentWrapper notBack>
+      <ContentWrapper>
         <VStack
           spacing={5}
           align="stretch"
@@ -81,8 +83,8 @@ const Plans:FC = () => {
         </VStack>
         <Button
           color="black"
-          bg="main.400"
           position="absolute"
+          background={colorMode === 'dark' ? 'main.400' : 'main.800'}
           right="5%"
           bottom="5%"
           onClick={confirm}
@@ -96,7 +98,14 @@ const Plans:FC = () => {
         <ContentWrapper>
           <Box ref={planRef}>
             <Box fontWeight={700} marginBottom={5}>
-              <Text as="span" color="main.400">#план</Text>
+              <Text
+                as="span"
+                color={colorMode === 'dark' ? 'main.400' : 'main.800'}
+                textShadow={colorMode === 'dark' ? 'none' : '-1px 1px 0 #000, '
+                  + '1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000'}
+              >
+                #план
+              </Text>
               <Text as="span">{` на ${moment().format('DD.MM.YYYY')}`}</Text>
             </Box>
             <VStack
