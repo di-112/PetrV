@@ -6,3 +6,4 @@ declare module '*.mp3';
 declare module '*.scss';
 declare module '*.less';
 declare module '*.css';
+declare const electron;

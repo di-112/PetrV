@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import styles from './style.less'
+import { Box, VStack } from '@chakra-ui/react';
 import { useStore } from '../../store/provider';
 import RedmineClient from '../../taskManagers/RedmineClient';
 import { ITasks } from '../../taskManagers/types';
+import TaskLink from '../common/TaskLink';
+import ContentWrapper from '../common/ContentWrapper';
 
 const Tasks = () => {
   const { token } = useStore()
@@ -17,32 +19,27 @@ const Tasks = () => {
       if (data) {
         setTasks(data)
       }
-      console.log('plans: ', data)
     }
     fetchPlans()
   }, [])
 
   return (
-    <div>
+    <Box>
       <h1>Задачи</h1>
-      <div className={styles.tasks}>
-        {tasks.map(task => (
-          <div key={task.id} className={styles.task}>
-            -
-            {' '}
-            <span className={styles.name}>
-              {task.id}
-              .
-              {task.tracker_name}
-            </span>
-            {' '}
-            -
-            {' '}
-            {task.subject}
-          </div>
-        ))}
-      </div>
-    </div>
+      <ContentWrapper>
+        <VStack
+          spacing={5}
+          align="stretch"
+        >
+          {tasks.map(task => (
+            <Box key={task.id} lineHeight="22px">
+              <TaskLink task={task} />
+              {task.subject}
+            </Box>
+          ))}
+        </VStack>
+      </ContentWrapper>
+    </Box>
   );
 };
 

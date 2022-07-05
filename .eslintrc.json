@@ -71,6 +71,7 @@
     "jsx-a11y/click-events-have-key-events": "off",
     "default-param-last": "off",
     "react/no-array-index-key": "off",
+    "react/require-default-props": "off",
     "jsx-a11y/no-noninteractive-element-interactions": "off",
     "import/prefer-default-export": "off",
     "react/jsx-filename-extension": "off",

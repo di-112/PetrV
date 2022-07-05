@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { Box, Center } from '@chakra-ui/react';
-import styles from './style.less'
+import { Box, Center, Text } from '@chakra-ui/react';
 import { useStore } from '../../store/provider';
 import RedmineClient from '../../taskManagers/RedmineClient';
 import { ITasks } from '../../taskManagers/types';
@@ -26,27 +25,35 @@ const Summary = () => {
   }, [])
 
   return (
-    <div>
+    <Box>
       <h1>Итоги</h1>
-      <div className={styles.tasks}>
-        {!tasks.length && <Center height="50px">Кажется, ты сегодня не списывал время</Center>}
+      <Box>
+        {!tasks.length && (
+          <Center
+            fontWeight={700}
+            fontSize={14}
+            height="50px"
+          >
+            Кажется, ты сегодня не списывал время
+          </Center>
+        )}
         {tasks.map(task => (
-          <div key={task.id} className={styles.task}>
+          <Box key={task.id}>
             -
             {' '}
-            <span className={styles.name}>
+            <Text>
               {task.id}
               .
               {task.tracker_name}
-            </span>
+            </Text>
             {' '}
             -
             {' '}
             {task.subject}
-          </div>
+          </Box>
         ))}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

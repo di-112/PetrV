@@ -13,11 +13,11 @@ const Settings = () => {
       <h1>Настройки</h1>
       <SimpleGrid columns={1} spacing={5} width="500px" p={5}>
         <FormControl display="flex" alignItems="center">
-          <FormLabel width={150} htmlFor="tracker">Task-трекер: </FormLabel>
+          <FormLabel margin={0} fontWeight={700} width={150} htmlFor="tracker">Task-трекер: </FormLabel>
           <Select fontSize={12} id="tracker" placeholder="Redmine" />
         </FormControl>
         <FormControl display="flex" alignItems="center">
-          <FormLabel width={150} htmlFor="token">Токен: </FormLabel>
+          <FormLabel margin={0} fontWeight={700} width={150} htmlFor="token">Токен: </FormLabel>
           <Input fontSize={12} defaultValue={token} />
         </FormControl>
       </SimpleGrid>

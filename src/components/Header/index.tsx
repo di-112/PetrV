@@ -1,28 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
-  Box,
-  Button,
-  Drawer,
-  DrawerBody,
-  DrawerContent,
-  DrawerHeader,
-  DrawerOverlay,
-  Flex,
-  IconButton,
-  useDisclosure,
+  Text, Flex, IconButton, useDisclosure,
 } from '@chakra-ui/react'
 import { observer } from 'mobx-react-lite';
-import { useLocation, useNavigate } from 'react-router-dom'
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { useStore } from '../../store/provider';
 import RedmineClient from '../../taskManagers/RedmineClient';
+import Menu from './components/Menu';
 
 const Header = () => {
   const { token, me, setMe } = useStore()
-
-  const navigate = useNavigate()
-
-  const location = useLocation()
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   useEffect(() => {
     const fetchMe = async () => {
@@ -35,118 +23,37 @@ const Header = () => {
     fetchMe()
   }, [])
 
-  electron.on('tasks', () => { navigate('/') })
-  electron.on('plans', () => { navigate('/plans') })
-  electron.on('settings', () => { navigate('/settings') })
-  electron.on('summary', () => { navigate('/summary') })
-
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const btnRef = React.useRef()
+  const burger = useRef()
 
   return (
     <Flex
+      as="header"
       position="absolute"
       left={0}
-      px={10}
-      as="header"
       top="0"
+      w="100%"
+      px={10}
+      paddingLeft={5}
       justifyContent="space-between"
       alignItems="center"
-      w="100%"
-      paddingLeft={5}
     >
       <IconButton
-        variant="ghost"
-        w={2}
-        minWidth={1}
         h={2}
-        icon={<HamburgerIcon />}
-        ref={btnRef}
+        w={2}
+        ref={burger}
+        minWidth={1}
+        variant="ghost"
         onClick={onOpen}
         aria-label="menu"
+        icon={<HamburgerIcon />}
       />
-      <Drawer
-        isOpen={isOpen}
-        placement="left"
-        closeOnOverlayClick
-        closeOnEsc
-        onClose={onClose}
-        finalFocusRef={btnRef}
-      >
-        <DrawerOverlay />
-        <DrawerContent background="bg.400">
-          <DrawerHeader fontSize={14} display="flex" alignItems="center">Меню</DrawerHeader>
-          <DrawerBody>
-            <Box>
-              <Button
-                onClick={() => {
-                  navigate('/')
-                  onClose()
-                }}
-                variant="unstyled"
-                color={location.pathname === '/'
-                  ? 'title.400'
-                  : 'white'}
-              >
-                Задачи
-              </Button>
-            </Box>
-            <Box>
-              <Button
-                onClick={() => {
-                  navigate('/plans')
-                  onClose()
-                }}
-                variant="unstyled"
-                color={location.pathname === '/plans'
-                  ? 'title.400'
-                  : 'white'}
-              >
-                Планы
-              </Button>
-            </Box>
-            <Box>
-              <Button
-                onClick={() => {
-                  navigate('/summary')
-                  onClose()
-                }}
-                variant="unstyled"
-                color={location.pathname === '/summary'
-                  ? 'title.400'
-                  : 'white'}
-              >
-                Итоги
-              </Button>
-            </Box>
-            <Box>
-              <Button
-                onClick={() => {
-                  navigate('/settings')
-                  onClose()
-                }}
-                variant="unstyled"
-                color={location.pathname === '/settings'
-                  ? 'title.400'
-                  : 'white'}
-              >
-                Настройки
-              </Button>
-            </Box>
-          </DrawerBody>
-
-        </DrawerContent>
-      </Drawer>
-      <Box color="title.400" fontWeight={700}>
+      <Text color="main.400" fontWeight={700}>
         {me?.login}
-      </Box>
-      {/* </Box>
-      <IconButton
-        aria-label="test"
-        icon={<SmallCloseIcon />}
-        onClick={() => electron.close()}
+      </Text>
+      <Menu
+        isOpen={isOpen}
+        onClose={onClose}
       />
-      <Box /> */}
     </Flex>
   );
 };

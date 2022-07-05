@@ -3,6 +3,7 @@ const {
 } = require('electron')
 const reload = require('electron-reload')
 const path = require('path')
+const { shell } = require('electron')
 
 const isDev = !app.isPackaged
 
@@ -58,6 +59,11 @@ app.whenReady().then(async () => {
     win.webContents.openDevTools()
   }
 
+  win.webContents.on('new-window', (e, url) => {
+    e.preventDefault()
+    shell.openExternal(url)
+  })
+
   tray = new Tray('./src/assets/images/logo.png')
   const contextMenu = Menu.buildFromTemplate([
     {
@@ -90,7 +96,7 @@ app.whenReady().then(async () => {
     },
   ])
 
-  tray.on('balloon-click', data => {
+  tray.on('balloon-click', () => {
     console.log('data')
   })
 
