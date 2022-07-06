@@ -18,16 +18,14 @@ const TaskLink :FC<ITaskLink> = ({ task }) => {
       <Link
         paddingX={2}
         color={colorMode === 'dark' ? 'main.400' : 'main.800'}
-        textShadow={colorMode === 'dark' ? 'none' : '-1px 1px 0 #000, '
-          + '1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000'}
         target="_blank"
         href={`${host}/issues/${task.id}`}
         display="inline-block"
         textAlign="center"
       >
-        {task.id}
-        .
         {task.tracker_name}
+        {' #'}
+        {task.id}
       </Link>
       {'- '}
     </>

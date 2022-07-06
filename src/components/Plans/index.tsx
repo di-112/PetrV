@@ -19,7 +19,7 @@ const selectText = (node: HTMLBaseElement) => {
   range.selectNodeContents(node);
   selection.removeAllRanges();
   selection.addRange(range);
-  setTimeout(() => { selection.removeAllRanges(); }, 1000)
+  setTimeout(() => { selection.removeAllRanges(); }, 500)
 }
 
 const Plans:FC = () => {
@@ -58,7 +58,7 @@ const Plans:FC = () => {
     setIsCoped(true)
     selectText(planRef.current)
     document.execCommand('copy');
-    setTimeout(() => { setIsCoped(false) }, 1000)
+    setTimeout(() => { setIsCoped(false) }, 500)
   }
 
   return (
@@ -82,9 +82,7 @@ const Plans:FC = () => {
           ))}
         </VStack>
         <Button
-          color="black"
           position="absolute"
-          background={colorMode === 'dark' ? 'main.400' : 'main.800'}
           right="5%"
           bottom="5%"
           onClick={confirm}
@@ -101,8 +99,6 @@ const Plans:FC = () => {
               <Text
                 as="span"
                 color={colorMode === 'dark' ? 'main.400' : 'main.800'}
-                textShadow={colorMode === 'dark' ? 'none' : '-1px 1px 0 #000, '
-                  + '1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000'}
               >
                 #план
               </Text>
@@ -121,8 +117,14 @@ const Plans:FC = () => {
             </VStack>
           </Box>
           <Button
-            color="black"
-            bg="main.400"
+            position="absolute"
+            left="5%"
+            bottom="5%"
+            onClick={() => { setIsEdit(true) }}
+          >
+            Назад
+          </Button>
+          <Button
             position="absolute"
             right="5%"
             bottom="5%"

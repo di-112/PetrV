@@ -4,7 +4,7 @@ import lightBack from './assets/images/lightBack.png'
 export const theme = {
   colors: {
     main: {
-      800: '#a7e657',
+      800: '#000000',
       400: '#0ad6eb',
       500: '#0b0c10',
       600: '#0b0c10',
@@ -15,6 +15,9 @@ export const theme = {
     },
     text: {
       400: '#c5c6c7',
+    },
+    green: {
+      400: '#a7e657',
     },
     back: {
       400: '#1f2833',
@@ -28,34 +31,67 @@ export const theme = {
       400: '#0ad6eb',
     },
   },
-  /*  components: props => ({
-    Button: {
-      baseStyle: {
-        background: () => (props.colorMode === 'dark' ? 'main.400' : 'main.800'),
-      },
-    },
-  }), */
   components: {
     Divider: {
       baseStyle: props => ({
-        borderColor: () => {
-          console.log('props: ', props)
-          return (props.colorMode === 'dark' ? 'white' : 'black')
-        },
+        borderColor: () => (props.colorMode === 'dark' ? 'white' : 'black'),
         opacity: 0.2,
       }),
     },
     Button: {
       baseStyle: props => ({
-        bg: () => {
-          console.log('props: ', props)
-          return (props.colorMode === 'dark' ? 'main.400' : 'main.800')
+        background: props.colorMode === 'dark' ? 'main.400' : 'green.400',
+        borderWidth: '2px',
+        color: 'black',
+        borderStyle: 'solid',
+        borderColor: props.colorMode === 'dark' ? 'main.400' : 'green.400',
+        _hover: {
+          bg: 'none',
+        },
+        _focus: {
+          boxShadow: 'none !important',
         },
       }),
-      _hover: props => ({
-        bg: 'none',
-        border: () => `1px solid ${props.colorMode === 'dark' ? 'main.400' : 'main.800'}`,
+      variants: {
+        unstyled: {
+          borderWidth: 0,
+        },
+        main: props => ({
+          background: props.colorMode === 'dark' ? 'main.400' : 'green.400',
+          borderWidth: '2px',
+          color: 'black',
+          borderStyle: 'solid',
+          borderColor: props.colorMode === 'dark' ? 'main.400' : 'green.400',
+          _hover: {
+            bg: 'none',
+            color: props.colorMode === 'dark' ? 'main.400' : 'green.400',
+          },
+          _focus: {
+            boxShadow: 'none !important',
+          },
+        }),
+      },
+      defaultProps: {
+        variant: 'main',
+      },
+    },
+    Checkbox: {
+      baseStyle: props => ({
+        borderColor: () => (props.colorMode === 'dark' ? 'main.400' : 'green.400'),
+        _focus: {
+          boxShadow: 'none !important',
+        },
+        _checked: {
+          background: 'main.400 !important',
+        },
       }),
+    },
+    Textarea: {
+      baseStyle: {
+        '::placeholder': {
+          color: 'gray.400',
+        },
+      },
     },
   },
   styles: {
@@ -66,7 +102,6 @@ export const theme = {
       body: {
         fontSize: 14,
         background: () => (`url(${props.colorMode === 'dark' ? darkBack : lightBack}) center / cover`),
-        // color: () => (props.colorMode === 'dark' ? 'white' : 'black'),
       },
       header: {
         h: '36px',
@@ -77,30 +112,7 @@ export const theme = {
         fontSize: 20,
         fontWeight: 700,
         color: () => (props.colorMode === 'dark' ? 'main.400' : 'main.800'),
-        textShadow: () => (props.colorMode === 'dark' ? 'none' : '-1px 1px 0 #000, '
-          + '1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000'),
         marginBottom: 5,
-      },
-      Checkbox: {
-        _focus: {
-          boxShadow: 'none !important',
-        },
-        _checked: {
-          background: 'main.400 !important',
-        },
-      },
-      Button: {
-        px: 2,
-        fontSize: 14,
-        _hover: {
-          boxShadow: 'none !important',
-        },
-        _active: {
-          boxShadow: 'none !important',
-        },
-        _focus: {
-          boxShadow: 'none !important',
-        },
       },
       a: {
         fontWeight: 700,

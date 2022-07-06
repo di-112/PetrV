@@ -27,7 +27,7 @@ const MenuItem: FC<IMenuItem> = ({
 
   const isActive = location.pathname === path
 
-  const activeColor = colorMode === 'dark' ? 'main.400' : 'main.800'
+  const activeColor = colorMode === 'dark' ? 'main.400' : 'green.400'
   const color = colorMode === 'dark' ? 'white' : 'black'
 
   return (
@@ -37,8 +37,6 @@ const MenuItem: FC<IMenuItem> = ({
         onClick={onClick}
         variant="unstyled"
         color={isActive ? activeColor : color}
-        textShadow={(!isActive || colorMode === 'dark') ? 'none' : '-1px 1px 0 #000, '
-          + '1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000'}
       >
         {title}
       </Button>

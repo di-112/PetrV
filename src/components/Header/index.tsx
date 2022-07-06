@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import {
-  Text, Flex, IconButton, useDisclosure, useColorMode, Box,
+  Flex, IconButton, Text, useColorMode, useDisclosure,
 } from '@chakra-ui/react'
 import { observer } from 'mobx-react-lite';
-import { HamburgerIcon, SunIcon, MoonIcon } from '@chakra-ui/icons';
+import { HamburgerIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { useStore } from '../../store/provider';
 import RedmineClient from '../../taskManagers/RedmineClient';
 import Menu from './components/Menu';
@@ -43,25 +43,28 @@ const Header = () => {
         ref={burger}
         minWidth={1}
         variant="ghost"
-        background="none !important"
+        bg="none !important"
+        borderWidth={0}
         onClick={onOpen}
         aria-label="menu"
-        color={colorMode === 'dark' ? 'main.400' : 'main.800'}
+        color={colorMode === 'dark' ? 'main.400' : 'green.400'}
         icon={<HamburgerIcon />}
       />
       <Flex alignItems="center">
-        <Text color={colorMode === 'dark' ? 'main.400' : 'main.800'} fontWeight={700}>
+        <Text color={colorMode === 'dark' ? 'main.400' : 'green.400'} fontWeight={700}>
           {me?.login}
         </Text>
         <IconButton
           height="24px"
           width="24px"
-          background="none !important"
-          color={colorMode === 'dark' ? 'main.400' : 'main.800'}
+          bg="none !important"
+          variant="unstyled"
+          color={colorMode === 'dark' ? 'main.400' : 'green.400'}
           minWidth={0}
           marginLeft={3}
           onClick={toggleColorMode}
           icon={colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+          aria-label="colorMode"
         />
       </Flex>
       <Menu

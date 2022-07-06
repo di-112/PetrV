@@ -48,7 +48,7 @@ const Menu: FC<IMenu> = ({
           fontSize={14}
           display="flex"
           alignItems="center"
-          color={colorMode === 'dark' ? 'main.400' : 'main.800'}
+          color={colorMode === 'dark' ? 'main.400' : 'green.400'}
         >
           Меню
         </DrawerHeader>

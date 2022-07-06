@@ -1,7 +1,7 @@
 import React, { Dispatch, FC } from 'react';
 import { observer } from 'mobx-react-lite';
 import {
-  Box, Checkbox, Divider, Flex, Input, Text,
+  Box, Checkbox, Divider, Flex, Text, Textarea,
 } from '@chakra-ui/react';
 import { ITasks } from '../../../../taskManagers/types';
 import TaskLink from '../../../common/TaskLink';
@@ -22,10 +22,7 @@ const Task :FC<ITaskComponent> = ({
   setTasks,
 }) => (
   <Box>
-    <Box marginBottom={5}>
-      <Text isTruncated fontWeight={700}>{task.subject}</Text>
-    </Box>
-    <Flex width="100%" alignItems="center" marginBottom={5}>
+    <Flex marginBottom={5}>
       <Checkbox
         marginRight={5}
         isChecked={task.isChecked}
@@ -38,16 +35,24 @@ const Task :FC<ITaskComponent> = ({
           })))
         }}
       />
-      <TaskLink task={task} />
-      <Input
+      <Text isTruncated>
+        <TaskLink task={task} />
+        {task.subject}
+      </Text>
+    </Flex>
+    <Flex width="100%" alignItems="center" marginBottom={5}>
+      <Textarea
         onChange={event => { task.value = event.target.value }}
         flex="1 1 auto"
         w="auto"
+        py="5px"
+        px="10px"
+        minHeight="32px"
+        maxHeight="200px"
         bg="white"
         color="black"
         size="sm"
         placeholder="(Продолжить выполнение)"
-        marginLeft="24px"
       />
     </Flex>
     {index !== (total - 1) && <Divider />}
