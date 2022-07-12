@@ -4,8 +4,13 @@ const {
 const reload = require('electron-reload')
 const path = require('path')
 const { shell } = require('electron')
+const { server } = require('./backend')
 
 const isDev = !app.isPackaged
+
+server.listen(5500, () => {
+  console.log(`Server started on ${5500} port`)
+})
 
 const createWindow = async () => {
   const win = new BrowserWindow({

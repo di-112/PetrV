@@ -6,9 +6,10 @@ import RedmineClient from '../../taskManagers/RedmineClient';
 import { ITasks } from '../../taskManagers/types';
 import TaskLink from '../common/TaskLink';
 import ContentWrapper from '../common/ContentWrapper';
+import Login from '../Login';
 
 const Tasks = () => {
-  const { token } = useStore()
+  const { token, isAuth } = useStore()
 
   const [tasks, setTasks] = useState<ITasks[]>([])
 
@@ -22,6 +23,8 @@ const Tasks = () => {
     }
     fetchPlans()
   }, [])
+
+  if (!isAuth) return <Login />
 
   return (
     <Box>

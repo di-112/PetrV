@@ -38,6 +38,20 @@ export const theme = {
         opacity: 0.2,
       }),
     },
+    Input: {
+      variants: {
+        main: {
+          background: 'red',
+          color: 'black',
+          '::placeholder': {
+            color: 'gray.400',
+          },
+        },
+      },
+      defaultProps: {
+        variant: 'main',
+      },
+    },
     Button: {
       baseStyle: props => ({
         background: props.colorMode === 'dark' ? 'main.400' : 'green.400',

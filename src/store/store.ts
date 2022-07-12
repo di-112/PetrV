@@ -8,9 +8,12 @@ class UserStore {
 
   me : IUser = null
 
+  isAuth = false
+
   constructor() {
     makeObservable(this, {
       token: observable,
+      isAuth: observable,
       me: observable,
       setToken: action,
       setMe: action,
