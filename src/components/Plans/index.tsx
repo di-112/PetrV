@@ -4,14 +4,17 @@ import React, {
 import { observer } from 'mobx-react-lite';
 import {
   Box, Button, Text, useColorMode, VStack,
+  useToast,
 } from '@chakra-ui/react';
 import moment from 'moment';
+
 import { useStore } from '../../store/provider';
 import RedmineClient from '../../taskManagers/RedmineClient';
 import { ITasks } from '../../taskManagers/types';
 import Task from './components/Task';
 import TaskLink from '../common/TaskLink';
 import ContentWrapper from '../common/ContentWrapper';
+import NoData from '../common/NoData';
 
 const selectText = (node: HTMLBaseElement) => {
   const selection = window.getSelection();
@@ -33,16 +36,29 @@ const Plans:FC = () => {
 
   const { colorMode } = useColorMode()
 
+  const toast = useToast()
+
   useEffect(() => {
     const fetchPlans = async () => {
-      const client = new RedmineClient(token)
-      const data = await client.getIssuesForPlan()
-      if (data) {
-        setTasks(data.map(item => ({
-          ...item,
-          isChecked: false,
-          value: 'Продолжить выполнение',
-        })))
+      try {
+        const client = new RedmineClient(token)
+        const data = await client.getIssuesForPlan()
+        if (data) {
+          setTasks(data.map(item => ({
+            ...item,
+            isChecked: false,
+            value: 'Продолжить выполнение',
+          })))
+        }
+      } catch (e) {
+        toast({
+          title: 'Ошибка',
+          description: 'Не удалось получить задачи',
+          status: 'error',
+          duration: 9000,
+          position: 'top-right',
+          isClosable: true,
+        })
       }
     }
     fetchPlans()
@@ -69,8 +85,9 @@ const Plans:FC = () => {
         <VStack
           spacing={5}
           align="stretch"
+          height="100%"
         >
-          {tasks.map((task, index) => (
+          {tasks.length ? tasks.map((task, index) => (
             <Task
               task={task}
               tasks={tasks}
@@ -79,7 +96,7 @@ const Plans:FC = () => {
               index={index}
               key={task.id}
             />
-          ))}
+          )) : <NoData />}
         </VStack>
         <Button
           position="absolute"

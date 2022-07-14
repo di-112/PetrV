@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { Box, Text, VStack } from '@chakra-ui/react';
+import { Box, VStack } from '@chakra-ui/react';
 import { useStore } from '../../store/provider';
 import RedmineClient from '../../taskManagers/RedmineClient';
 import { ITasks } from '../../taskManagers/types';
 import TaskLink from '../common/TaskLink';
 import ContentWrapper from '../common/ContentWrapper';
-import Login from '../Login';
 
 const Tasks = () => {
-  const { token, isAuth } = useStore()
+  const { token } = useStore()
 
   const [tasks, setTasks] = useState<ITasks[]>([])
 
@@ -23,8 +22,6 @@ const Tasks = () => {
     }
     fetchPlans()
   }, [])
-
-  if (!isAuth) return <Login />
 
   return (
     <Box>

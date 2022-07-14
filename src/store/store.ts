@@ -24,6 +24,10 @@ class UserStore {
     this.token = str
   }
 
+  setAuth = bool => {
+    this.isAuth = bool
+  }
+
   setMe = me => {
     this.me = me
   }

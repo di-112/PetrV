@@ -39,9 +39,19 @@ export const theme = {
       }),
     },
     Input: {
+      baseStyle: {
+        field: {
+          border: '1px solid rgb(226, 232, 240)',
+          color: 'black',
+          '::placeholder': {
+            color: 'gray.400',
+          },
+        },
+      },
       variants: {
         main: {
-          background: 'red',
+          display: 'block',
+          background: 'white',
           color: 'black',
           '::placeholder': {
             color: 'gray.400',
@@ -52,6 +62,31 @@ export const theme = {
         variant: 'main',
       },
     },
+    Textarea: {
+      baseStyle: {
+        field: {
+          border: '1px solid rgb(226, 232, 240)',
+          color: 'black',
+          '::placeholder': {
+            color: 'gray.400',
+          },
+        },
+      },
+      variants: {
+        main: {
+          display: 'block',
+          background: 'white',
+          color: 'black',
+          '::placeholder': {
+            color: 'gray.400',
+          },
+        },
+      },
+      defaultProps: {
+        variant: 'main',
+      },
+    },
+
     Button: {
       baseStyle: props => ({
         background: props.colorMode === 'dark' ? 'main.400' : 'green.400',
@@ -99,13 +134,6 @@ export const theme = {
           background: 'main.400 !important',
         },
       }),
-    },
-    Textarea: {
-      baseStyle: {
-        '::placeholder': {
-          color: 'gray.400',
-        },
-      },
     },
   },
   styles: {
