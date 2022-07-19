@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ITasks, IUser } from './types';
+import { ITasks, ITimeEntry, IUser } from './types';
 
 class RedmineClient {
   apiKey = null
@@ -30,21 +30,21 @@ class RedmineClient {
       })))
   }
 
-  getIssuesByMultipleId(multipleId) {
+  getIssuesByMultipleId(multipleId) : Promise<ITasks[]> {
     return axios.get(`${this.redmineHost}/issues.json`, {
       headers: { 'X-Redmine-API-Key': this.apiKey },
       params: {
         issue_id: multipleId,
       },
     }).then(response => response.data.issues
-      .map(({ id, tracker: { name } }) => ({ issue_id: id, tracker_name: name })))
+      .map(({ id, tracker: { name }, ...rest }) => ({ issue_id: id, tracker_name: name, ...rest })))
   }
 
   getMe = () : Promise<IUser> => axios.get(`${this.redmineHost}/my/account.json`, {
     headers: { 'X-Redmine-API-Key': this.apiKey },
   }).then(response => response.data?.user)
 
-  getTodayTimeEntries(userId) {
+  getTodayTimeEntries(userId) : Promise<ITimeEntry[]> {
     return axios.get(`${this.redmineHost}/time_entries.json`, {
       params: {
         limit: 100, user_id: userId, spent_on: 't', sort: 'id.asc',

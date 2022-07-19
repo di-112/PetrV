@@ -25,3 +25,9 @@ export interface IAssignedTo {
   id: number;
   name: string;
 }
+
+export interface ITimeEntry {
+  issue_id: number,
+  comment: string,
+  hours: number,
+}

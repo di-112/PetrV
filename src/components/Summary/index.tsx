@@ -1,27 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { Box, Center, Text } from '@chakra-ui/react';
+import { Box, Center, VStack } from '@chakra-ui/react';
 import { useStore } from '../../store/provider';
 import RedmineClient from '../../taskManagers/RedmineClient';
-import { ITasks } from '../../taskManagers/types';
+import { ITasks, ITimeEntry } from '../../taskManagers/types';
+import TaskLink from '../common/TaskLink';
+
+interface ISummary extends ITasks, ITimeEntry {}
 
 const Summary = () => {
   const { token, me } = useStore()
 
-  const [tasks, setTasks] = useState<ITasks[]>([])
+  const [tasks, setTasks] = useState<ISummary[]>([])
 
   useEffect(() => {
-    const fetchPlans = async () => {
+    const fetchSummary = async () => {
       const client = new RedmineClient(token)
       if (me.id) {
         const data = await client.getTodayTimeEntries(me.id)
-        console.log('data: ', data)
-        if (data) {
-          setTasks(data)
-        }
+
+        const res = await client.getIssuesByMultipleId(data.map(item => item.issue_id).join(','))
+
+        console.log('test: ', res.map(item => ({
+          ...item,
+          ...data.find(row => row.issue_id === item.id),
+        })))
+
+        setTasks(res.map(item => ({
+          ...item,
+          ...data.find(row => row.issue_id === item.id),
+        })))
       }
     }
-    fetchPlans()
+    fetchSummary()
   }, [])
 
   return (
@@ -37,21 +48,17 @@ const Summary = () => {
             Кажется, ты сегодня не списывал время
           </Center>
         )}
-        {tasks.map(task => (
-          <Box key={task.id}>
-            -
-            {' '}
-            <Text>
-              {task.id}
-              .
-              {task.tracker_name}
-            </Text>
-            {' '}
-            -
-            {' '}
-            {task.subject}
-          </Box>
-        ))}
+        <VStack
+          spacing={5}
+          align="stretch"
+        >
+          {tasks.map(task => (
+            <Box key={task.id}>
+              <TaskLink task={task} />
+              {`${task.comment}(${task.hours}ч.)`}
+            </Box>
+          ))}
+        </VStack>
       </Box>
     </Box>
   );
