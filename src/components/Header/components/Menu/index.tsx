@@ -55,6 +55,7 @@ const Menu: FC<IMenu> = ({
         <DrawerBody>
           {MenuConfig.map(({ title, path }) => (
             <MenuItem
+              key={title}
               path={path}
               onClose={onClose}
               title={title}

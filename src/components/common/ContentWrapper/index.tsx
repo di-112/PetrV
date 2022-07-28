@@ -1,6 +1,8 @@
 import React, { FC, ReactNode } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Box, useColorMode } from '@chakra-ui/react';
+import { useStore } from '../../../store/provider';
+import Loader from '../Loader';
 
 interface IContentWrapper {
   children: ReactNode,
@@ -13,7 +15,11 @@ const ContentWrapper:FC<IContentWrapper> = ({
 }) => {
   const { colorMode } = useColorMode()
 
+  const { isLoading } = useStore()
+
   const background = colorMode === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.05)'
+
+  if (isLoading) return <Loader />
 
   return (
     <Box

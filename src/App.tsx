@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { extendTheme } from '@chakra-ui/react'
 import {
   Route, Routes, useLocation, useNavigate,
 } from 'react-router-dom';
@@ -16,11 +15,17 @@ const App = () => {
 
   const location = useLocation()
 
-  const { isAuth } = useStore()
+  const { isAuth, isAllSettings } = useStore()
 
   useEffect(() => {
     if (!isAuth && location.pathname !== '/login') {
       navigate('/login')
+    }
+  }, [location.pathname])
+
+  useEffect(() => {
+    if (isAuth && !isAllSettings) {
+      navigate('/settings')
     }
   }, [location.pathname])
 

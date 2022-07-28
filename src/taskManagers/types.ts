@@ -1,4 +1,11 @@
 export interface IUser {
+  token: string,
+  apiKey?: string,
+  taskTracker?:string,
+  email?: string
+}
+
+export interface IUserRedmine {
   id: number;
   login: string;
   admin: boolean;

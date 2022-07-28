@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ITasks, ITimeEntry, IUser } from './types';
+import { ITasks, ITimeEntry, IUserRedmine } from './types';
 
 class RedmineClient {
   apiKey = null
@@ -40,7 +40,7 @@ class RedmineClient {
       .map(({ id, tracker: { name }, ...rest }) => ({ issue_id: id, tracker_name: name, ...rest })))
   }
 
-  getMe = () : Promise<IUser> => axios.get(`${this.redmineHost}/my/account.json`, {
+  getMe = () : Promise<IUserRedmine> => axios.get(`${this.redmineHost}/my/account.json`, {
     headers: { 'X-Redmine-API-Key': this.apiKey },
   }).then(response => response.data?.user)
 

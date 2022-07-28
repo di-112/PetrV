@@ -16,8 +16,8 @@ const Summary = () => {
   useEffect(() => {
     const fetchSummary = async () => {
       const client = new RedmineClient(token)
-      if (me.id) {
-        const data = await client.getTodayTimeEntries(me.id)
+      if (me.apiKey) {
+        const data = await client.getTodayTimeEntries(me.apiKey)
 
         const res = await client.getIssuesByMultipleId(data.map(item => item.issue_id).join(','))
 

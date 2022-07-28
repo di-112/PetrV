@@ -1,20 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import {
-  Box, Button, Center, Input, Text, VStack, Flex, useColorMode, useToast,
+  Box, Button, Center, Flex, Input, Text, useColorMode, VStack,
 } from '@chakra-ui/react';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
-import axios from 'axios';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import ContentWrapper from '../common/ContentWrapper';
 import { auth } from '../../firebase';
 import { useStore } from '../../store/provider';
+import { api } from '../../api/api';
+import { useErrorToast } from '../../hooks/useErrorToast';
+import Loader from '../common/Loader';
 
 const Login = () => {
   const [login, setLogin] = useState(null)
   const [pass, setPass] = useState(null)
 
-  const toast = useToast()
+  const showError = useErrorToast()
 
   const [isCreate, setIsCreate] = useState(false)
 
@@ -22,49 +24,76 @@ const Login = () => {
 
   const navigate = useNavigate()
 
-  const { setAuth } = useStore()
+  const { setMe, setIsLoading, isLoading } = useStore()
 
-  const onSubmit = async () => {
-    if (isCreate) {
-      try {
-        const reg = await createUserWithEmailAndPassword(auth, login, pass)
-      } catch (e) {
-        console.log('e: ', e)
-        toast({
-          title: 'Ошибка',
-          description: 'Не удалось получить задачи',
-          status: 'error',
-          duration: 9000,
-          position: 'top-right',
-          isClosable: true,
+  const onSubmit = async data => {
+    setIsLoading(true)
+
+    try {
+      if (isCreate) {
+        const reg = await createUserWithEmailAndPassword(auth, data.login, data.pass)
+        await api.addUser({
+          token: reg.user?.uid,
         })
+
+        return
       }
 
-      return
-    }
-    try {
-      const sign = await signInWithEmailAndPassword(auth, login, pass)
+      const sign = await signInWithEmailAndPassword(auth, data.login, data.pass)
 
-      const data = await axios.get('http://localhost:5500/users', {
-        params: {
-          token: sign.user.accessToken,
-        },
-      })
+      const token = sign.user?.uid
 
-      setAuth(true)
+      if (token) {
+        let user = await api.getUser(token)
 
-      navigate('/')
+        if (!user.token) {
+          const res = await api.addUser({ token })
+
+          if (res.success) {
+            user = await api.getUser(token)
+          }
+        }
+
+        if (user.token) {
+          const me = {
+            ...user,
+            email: sign.user.email,
+          }
+
+          setMe(me)
+
+          localStorage.setItem('user', JSON.stringify({ login: data.login, pass: data.pass }))
+
+          navigate('/')
+        }
+
+        return
+      }
+
+      throw new Error('User not found')
     } catch (e) {
-      toast({
-        title: 'Ошибка',
-        description: e.message,
-        status: 'error',
-        duration: 9000,
-        position: 'top-right',
-        isClosable: true,
-      })
+      showError({ description: e.message })
+    } finally {
+      setIsLoading(false)
     }
-  };
+  }
+
+  useEffect(() => {
+    const signIn = async () => {
+      const saved = localStorage.getItem('user')
+
+      if (saved) {
+        const savedData = JSON.parse(saved)
+        await onSubmit({ login: savedData.login, pass: savedData.pass })
+      }
+    }
+
+    signIn()
+  }, [])
+
+  if (isLoading) {
+    return <Loader />
+  }
 
   return (
     <Box>
@@ -92,7 +121,7 @@ const Login = () => {
             <Flex alignItems="center">
               <Button
                 width={150}
-                onClick={onSubmit}
+                onClick={() => onSubmit({ login, pass })}
               >
                 {isCreate ? 'Создать' : 'Войти'}
               </Button>

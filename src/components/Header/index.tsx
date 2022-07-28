@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import {
   Box, Flex, IconButton, Text, useColorMode, useDisclosure,
 } from '@chakra-ui/react'
@@ -8,28 +8,16 @@ import {
 } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../../store/provider';
-import RedmineClient from '../../taskManagers/RedmineClient';
 import Menu from './components/Menu';
 
 const Header = () => {
   const {
-    token, me, setMe, isAuth, setAuth,
+    me, setMe, isAuth, isAllSettings,
   } = useStore()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { colorMode, toggleColorMode } = useColorMode()
 
   const navigate = useNavigate()
-
-  useEffect(() => {
-    const fetchMe = async () => {
-      const client = new RedmineClient(token)
-      const data = await client.getMe()
-      if (data) {
-        setMe(data)
-      }
-    }
-    fetchMe()
-  }, [])
 
   const burger = useRef()
 
@@ -49,6 +37,7 @@ const Header = () => {
         w={2}
         ref={burger}
         minWidth={1}
+        disabled={!isAllSettings}
         variant="ghost"
         bg="none !important"
         visibility={isAuth ? 'visible' : 'hidden'}
@@ -60,7 +49,7 @@ const Header = () => {
       />
       <Flex alignItems="center">
         <Text color={colorMode === 'dark' ? 'main.400' : 'green.400'} fontWeight={700}>
-          {me?.login}
+          {me?.email}
         </Text>
         <Box>
           <IconButton
@@ -84,7 +73,8 @@ const Header = () => {
                 minWidth={0}
                 marginLeft={3}
                 onClick={() => {
-                  setAuth(false)
+                  setMe(null)
+                  localStorage.removeItem('user')
                   navigate('/login')
                 }}
                 icon={(
