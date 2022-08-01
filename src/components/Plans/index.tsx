@@ -43,7 +43,7 @@ const Plans:FC = () => {
   useEffect(() => {
     const fetchPlans = async () => {
       setIsLoading(true)
-      const data = await getPlans(me.taskTracker, me.apiKey)
+      const data = await getPlans(me?.taskTracker, me?.apiKey)
       if (data) {
         setTasks(data.map(item => ({
           ...item,

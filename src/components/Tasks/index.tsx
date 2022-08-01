@@ -19,7 +19,7 @@ const Tasks = () => {
     setIsLoading(true)
 
     const fetchPlans = async () => {
-      const data = await getTasks(me.taskTracker, me.apiKey)
+      const data = await getTasks(me?.taskTracker, me?.apiKey)
       if (data) {
         setTasks(data)
       }
