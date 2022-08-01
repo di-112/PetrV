@@ -40,7 +40,7 @@ const Settings = () => {
   }
 
   return (
-    <div>
+    <>
       <h1>Настройки</h1>
       {!isAllSettings && (
       <Alert status="error">
@@ -61,6 +61,7 @@ const Settings = () => {
             {' '}
           </FormLabel>
           <Select
+            iconColor="black"
             fontSize={12}
             id="tracker"
             onChange={event => {
@@ -68,8 +69,15 @@ const Settings = () => {
             }}
             value={taskTracker}
           >
-            <option value="Redmine">Redmine</option>
-            <option value="Other">Other</option>
+            <option
+              style={{
+                background: 'white', display: 'block', lineHeight: 35, padding: '10px 15px',
+              }}
+              value="Redmine"
+            >
+              Redmine
+            </option>
+            <option style={{ background: 'white', display: 'block', padding: '10px 15px' }} value="Other">Other</option>
           </Select>
         </FormControl>
         <FormControl display="flex" alignItems="center">
@@ -99,7 +107,7 @@ const Settings = () => {
       >
         Сохранить
       </Button>
-    </div>
+    </>
   )
 }
 

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import {
   Route, Routes, useLocation, useNavigate,
 } from 'react-router-dom';
+import { Flex } from '@chakra-ui/react';
 import Header from './components/Header';
 import { useStore } from './store/provider';
 import Plans from './components/Plans';
@@ -30,7 +31,7 @@ const App = () => {
   }, [location.pathname])
 
   return (
-    <>
+    <Flex direction="column" height="100%">
       <Header />
       <Routes>
         <Route path="/login" element={<Login />} />
@@ -39,7 +40,7 @@ const App = () => {
         <Route path="/summary" element={<Summary />} />
         <Route path="/settings" element={<Settings />} />
       </Routes>
-    </>
+    </Flex>
   )
 };
 export default App;

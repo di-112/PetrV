@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import {
-  Box, Button, Center, Flex, Input, Text, useColorMode, VStack,
+  Button, Center, Flex, Input, Text, useColorMode, VStack,
 } from '@chakra-ui/react';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
@@ -33,7 +33,7 @@ const Login = () => {
       if (isCreate) {
         const reg = await createUserWithEmailAndPassword(auth, data.login, data.pass)
         await api.addUser({
-          token: reg.user?.uid,
+          token: reg.user?.email,
         })
 
         return
@@ -41,7 +41,7 @@ const Login = () => {
 
       const sign = await signInWithEmailAndPassword(auth, data.login, data.pass)
 
-      const token = sign.user?.uid
+      const token = sign.user?.email
 
       if (token) {
         let user = await api.getUser(token)
@@ -96,7 +96,7 @@ const Login = () => {
   }
 
   return (
-    <Box>
+    <>
       <h1>{isCreate ? 'Создать' : 'Войти'}</h1>
       <ContentWrapper notBack>
         <Center width="100%" height="100%">
@@ -142,7 +142,7 @@ const Login = () => {
           </VStack>
         </Center>
       </ContentWrapper>
-    </Box>
+    </>
   );
 };
 

@@ -69,7 +69,7 @@ const Plans:FC = () => {
   }
 
   return (
-    <Box>
+    <>
       <h1>План</h1>
       {isEdit && (
       <ContentWrapper>
@@ -145,7 +145,7 @@ const Plans:FC = () => {
         </ContentWrapper>
         )
       }
-    </Box>
+    </>
   );
 };
 

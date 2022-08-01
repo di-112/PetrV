@@ -1,11 +1,11 @@
 import React from 'react';
-import { Center, Spinner } from '@chakra-ui/react';
+import { Center, Spinner, Box } from '@chakra-ui/react';
 import Header from '../../Header';
 
 const Loader = () => (
-  <>
+  <Box flex="1 1 auto">
     <Header />
-    <Center w="100%" h="100%">
+    <Center w="100%" h="100%" flex="1 1 auto">
       <Spinner
         thickness="4px"
         speed="0.65s"
@@ -14,7 +14,7 @@ const Loader = () => (
         size="xl"
       />
     </Center>
-  </>
+  </Box>
 );
 
 export default Loader;

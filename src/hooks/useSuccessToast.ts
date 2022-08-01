@@ -4,7 +4,7 @@ export const useSuccessToast = () => {
   const toast = useToast({
     title: 'Успешно',
     status: 'success',
-    duration: 9000,
+    duration: 5000,
     position: 'top-right',
     isClosable: true,
   })

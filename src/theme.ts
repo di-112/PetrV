@@ -62,6 +62,18 @@ export const theme = {
         variant: 'main',
       },
     },
+    Select: {
+      baseStyle: {
+        field: {
+          border: '1px solid rgb(226, 232, 240)',
+          background: 'white',
+          color: 'black',
+          '::placeholder': {
+            color: 'gray.400',
+          },
+        },
+      },
+    },
     Textarea: {
       baseStyle: {
         field: {

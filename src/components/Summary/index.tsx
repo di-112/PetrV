@@ -36,7 +36,7 @@ const Summary = () => {
   }, [])
 
   return (
-    <Box>
+    <>
       <h1>Итоги</h1>
       <Box>
         {!tasks.length && (
@@ -60,7 +60,7 @@ const Summary = () => {
           ))}
         </VStack>
       </Box>
-    </Box>
+    </>
   );
 };
 

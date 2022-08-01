@@ -2,29 +2,36 @@ import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Box, VStack } from '@chakra-ui/react';
 import { useStore } from '../../store/provider';
-import RedmineClient from '../../taskManagers/RedmineClient';
 import { ITasks } from '../../taskManagers/types';
 import TaskLink from '../common/TaskLink';
 import ContentWrapper from '../common/ContentWrapper';
+import { getTasks } from '../../utils/getTasks';
+import { useErrorToast } from '../../hooks/useErrorToast';
 
 const Tasks = () => {
-  const { token } = useStore()
+  const { me, setIsLoading } = useStore()
 
   const [tasks, setTasks] = useState<ITasks[]>([])
 
+  const showError = useErrorToast()
+
   useEffect(() => {
+    setIsLoading(true)
+
     const fetchPlans = async () => {
-      const client = new RedmineClient(token)
-      const data = await client.getIssuesForPlan()
+      const data = await getTasks(me.taskTracker, me.apiKey)
       if (data) {
         setTasks(data)
       }
     }
+
     fetchPlans()
+      .catch(() => showError({ description: 'Не удалось получить задачи' }))
+      .finally(() => setIsLoading(false))
   }, [])
 
   return (
-    <Box>
+    <>
       <h1>Задачи</h1>
       <ContentWrapper>
         <VStack
@@ -39,7 +46,7 @@ const Tasks = () => {
           ))}
         </VStack>
       </ContentWrapper>
-    </Box>
+    </>
   );
 };
 
